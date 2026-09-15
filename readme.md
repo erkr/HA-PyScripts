@@ -52,23 +52,19 @@ config/
 
 ### 1.3 Copy the Pyscript Files
 
-Extract the provided ZIP file.
-
-Copy all included files and subfolders to:
+Copy all files and subfolders from the pyscript folder to your local pyscript folder:
 
 ```text
 /config/pyscript/
 ```
 
-Also copy the folder:
+Ensure to include the folder:
 
 ```text
 modules
 ```
 
-including all of its contents.
-
-The original folder structure from the ZIP file must be preserved.
+The original folder structure must be preserved.
 
 ---
 
