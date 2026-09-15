@@ -365,6 +365,8 @@ By default, the card shows:
 - The current list of unavailable devices
 - Separate overviews of expected and unexpected unavailable devices
 
+<img width="250" alt="unavailable_devices_card" src="https://github.com/user-attachments/assets/84e80981-fb20-4373-8a80-9d0e48cb531c" />
+
 ---
 
 ## 11. Alerts and Info
