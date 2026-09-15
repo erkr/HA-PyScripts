@@ -419,6 +419,7 @@ Instead of showing all individual devices, the card then shows, among other thin
 - The number of missing devices
 - A grouping by integration
 - The number of missing devices per integration
+<img width="250" alt="image1" src="https://github.com/user-attachments/assets/74cb9d22-e482-4822-8be1-ad90db7b895d" />
 
 When you click an integration, Home Assistant navigates to that integration.
 
