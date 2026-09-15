@@ -1,0 +1,111 @@
+type: custom:expander-card
+cards:
+  - type: custom:statistics-graph-chart-card
+    show_legend: true
+    points_per_hour: 6
+    auto_scale_points: true
+    tooltip_match_axis: false
+    tooltip_order: default
+    height: 120
+    x_grid_style: dashed
+    y_grid_style: dashed
+    group_by: raw
+    entities:
+      - entity: pyscript.unavailable_devices
+        statistic_id: null
+        name: total
+        color: '#ff4757'
+        graph_type: step
+        show_state: false
+      - entity: pyscript.unavailable_devices
+        statistic_id: null
+        name: info (expected)
+        color: '#378ADD'
+        attribute: expected
+        graph_type: step
+        align_state: right
+        show_state: false
+    annotations: []
+  - type: custom:auto-entities
+    card:
+      type: entities
+    filter:
+      template: >
+        {%- set summary = state_attr('pyscript.unavailable_devices','summary') |
+        bool(false) -%} {%- set devlist =
+        state_attr('pyscript.unavailable_devices','devices') or [] %} {%- set
+        ns=namespace(unexpected=[], expected=[], summary=[]) -%}   {%- for k in
+        devlist -%}
+            {%- set info=devlist[k] -%}
+            {%- if summary -%}
+             {%- set entry = {
+              'type': 'custom:template-entity-row',
+              'card_mod': {
+                    'style': {
+                      'div#wrapper': 'state-badge {\n  display: none;\n}\n.info {\n  margin-left:0 !important;\n}\n'
+                    }
+                  },
+              'name': 'Integration: '~k,
+              'sort': info.uav,
+              'state': info.uav~' (of '~info.tot~')',
+              'secondary': 'all expected: '~info.exp,
+              'tap_action': {
+                  'action': 'navigate',
+                  'navigation_path': '/config/integrations/integration/'~k },
+              } -%}
+              {%- set ns.summary= ns.summary + [entry] -%}
+            {%- else -%}
+             {%- set sec_info = 'Area:'~info.area~', Mdl:'~info.mod  -%}
+             {%- set entry = {
+              'type': 'custom:template-entity-row',
+              'card_mod': {
+                    'style': {
+                      'div#wrapper': 'state-badge {\n  display: none;\n}\n.info {\n  margin-left:0 !important;\n}\n'
+                    }
+                  },
+              'name': info.int~': '~info.name,
+              'sort': as_timestamp(info.since),
+              'state': time_since(info.since,2)  | regex_replace(find='ou|ute|ond|th|ee|ea', replace=''),
+              'secondary': sec_info,
+              'tap_action': {
+                  'action': 'navigate',
+                  'navigation_path': '/config/devices/device/'~k },
+              } -%}
+            {%- if info.exp -%}
+              {%- set ns.expected= ns.expected + [entry] -%}
+            {%- else -%}
+              {%- set ns.unexpected= ns.unexpected + [entry] -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}     {%- if summary %}   
+         {%- set ns.summary = ns.summary |
+        sort(attribute='sort', reverse = True) -%}      {%- set result =
+        [{'type': 'section', 'label': '     Summary:'}] + ns.summary -%}  {%-
+        else -%}  {%- set ns.unexpected = ns.unexpected | sort(attribute='sort',
+        reverse = True) -%}  {%- set ns.expected = ns.expected |
+        sort(attribute='sort', reverse = True) -%}  
+          {%- set result = [{'type': 'section', 'label': '    
+        Alerts (not expected):'}] + ns.unexpected + 
+                         [{'type': 'section', 'label': '     Info (expected):'} ] +
+                         ns.expected-%}
+              {%- endif -%} 
+          {{ result }}
+      include: []
+      exclude: []
+    sort:
+      method: none
+gap: '0'
+padding: '0'
+title-card:
+  type: markdown
+  content: >
+    {%- set count=states('pyscript.unavailable_devices') | int(0) %}   {%- set
+    expected=state_attr('pyscript.unavailable_devices','expected')| int(0) -%}
+     {%- set
+    icon_color=state_attr('pyscript.unavailable_devices','icon_color') or 'gray'
+    -%} {%- set icon=state_attr('pyscript.unavailable_devices','icon') -%}  
+     #### <font color = "{{ icon_color }}"><ha-icon icon="{{ icon }}"></ha-icon></font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unavailable devices: {{count}} (alerts: {{ count-expected }})
+expanded-gap: O
+child-padding: '0'
+clear-children: true
+expander-card-id: monitor-status

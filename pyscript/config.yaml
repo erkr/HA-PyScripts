@@ -1,0 +1,4 @@
+global:
+    token: !secret ha_long_lived_token
+hass_is_global: true
+allow_all_imports: true
