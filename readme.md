@@ -307,19 +307,6 @@ Only use this when there is a clear reason to do so.
 
 An example would be an entity that remains permanently available through an integration even when the underlying physical device is no longer reachable.
 
-### 8.4 Exclude Additional Integrations
-
-The script contains a list of integrations that may add entities to existing devices.
-
-By default, this includes, among others:
-
-- Powercalc
-- Template
-
-If you use another integration that adds extra entities to existing devices in the same way, you can add it to this list.
-
-For most Home Assistant installations, this will not be necessary.
-
 ---
 
 ## 9. Diagnostic Actions
