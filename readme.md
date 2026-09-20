@@ -248,12 +248,12 @@ Some integrations add extra entities to an existing device.
 Examples include:
 
 - Powercalc
-- Template helpers (that add the entity to a device)
-
+- switch_as_x
+- Template helpers (offer the option to add the entity to a device)
+ 
 These entities do not necessarily have the same availability status as the physical device itself.
 
-The script can take this into account so that these additional entities do not unintentionally affect the device availability check.
-Entities from integrations that should be ignored are defined in `extend_integrations` (Default PowerCalc and Template).
+The script takes this into account and ignores all entities added by other integration during the device availability check.
 
 ---
 
